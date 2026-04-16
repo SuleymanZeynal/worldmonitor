@@ -1308,6 +1308,31 @@ export class PanelLayoutManager implements AppModule {
       }
     });
 
+    // Highlight newly added panels for existing users (panels not in saved order).
+    // Only runs once per panel key (guarded by localStorage flag).
+    if (hasSavedOrder) {
+      const missing = activePanelKeys.filter(k => !savedOrder.includes(k) && k !== 'monitors');
+      for (const key of missing) {
+        const flagKey = `wm-panel-first-seen-${key}`;
+        if (localStorage.getItem(flagKey)) continue;
+        localStorage.setItem(flagKey, '1');
+        const panel = this.ctx.panels[key];
+        if (!panel) continue;
+        const el = panel.getElement();
+        // Delay to let the browser finish layout before scrolling.
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          el.style.transition = 'outline 0.2s ease, box-shadow 0.2s ease';
+          el.style.outline = '2px solid var(--status-live, #22c55e)';
+          el.style.boxShadow = '0 0 12px var(--status-live, #22c55e)';
+          setTimeout(() => {
+            el.style.outline = '';
+            el.style.boxShadow = '';
+          }, 2500);
+        }, 600);
+      }
+    }
+
     // "+" Add Panel block at the end of the grid
     const addPanelBlock = document.createElement('button');
     addPanelBlock.className = 'add-panel-block';
