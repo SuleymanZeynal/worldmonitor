@@ -10,6 +10,7 @@ export * from './StockAnalysisPanel';
 export * from './StockBacktestPanel';
 export * from './PredictionPanel';
 export * from './MonitorPanel';
+export * from './CustomNewsPanel';
 export * from './SignalModal';
 export * from './PlaybackControl';
 export * from './StatusPanel';

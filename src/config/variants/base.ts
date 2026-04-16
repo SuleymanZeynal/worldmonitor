@@ -87,6 +87,7 @@ export const MONITOR_COLORS = [
 export const STORAGE_KEYS = {
   panels: 'worldmonitor-panels',
   monitors: 'worldmonitor-monitors',
+  customNewsSources: 'worldmonitor-custom-news-sources',
   mapLayers: 'worldmonitor-layers',
   disabledFeeds: 'worldmonitor-disabled-feeds',
   liveChannels: 'worldmonitor-live-channels',

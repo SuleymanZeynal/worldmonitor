@@ -20,6 +20,8 @@ import {
   OtherTokensPanel,
   PredictionPanel,
   MonitorPanel,
+  CustomNewsPanel,
+  type CustomSource,
   EconomicPanel,
   ConsumerPricesPanel,
   EnergyComplexPanel,
@@ -751,6 +753,12 @@ export class PanelLayoutManager implements AppModule {
       this.ctx.monitors = monitors;
       saveToStorage(STORAGE_KEYS.monitors, monitors);
       this.callbacks.updateMonitorResults();
+    });
+
+    const customNewsPanel = this.createPanel('custom-news', () => new CustomNewsPanel(this.ctx.customNewsSources));
+    customNewsPanel?.onChanged((sources: CustomSource[]) => {
+      this.ctx.customNewsSources = sources;
+      saveToStorage(STORAGE_KEYS.customNewsSources, sources);
     });
 
     this.createPanel('commodities', () => new CommoditiesPanel());

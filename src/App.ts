@@ -1,4 +1,5 @@
 import type { Monitor, PanelConfig, MapLayers } from '@/types';
+import type { CustomSource } from '@/components/CustomNewsPanel';
 import { normalizeExclusiveChoropleths } from '@/components/resilience-choropleth-utils';
 import type { AppContext } from '@/app/app-context';
 import {
@@ -410,6 +411,7 @@ export class App {
     const isMobile = isMobileDevice();
     const isDesktopApp = isDesktopRuntime();
     const monitors = loadFromStorage<Monitor[]>(STORAGE_KEYS.monitors, []);
+    const customNewsSources = loadFromStorage<CustomSource[]>(STORAGE_KEYS.customNewsSources, []);
 
     // Use mobile-specific defaults on first load (no saved layers)
     const defaultLayers = isMobile ? MOBILE_DEFAULT_MAP_LAYERS : DEFAULT_MAP_LAYERS;
@@ -698,6 +700,7 @@ export class App {
       inFlight: new Set(),
       seenGeoAlerts: new Set(),
       monitors,
+      customNewsSources,
       signalModal: null,
       statusPanel: null,
       searchModal: null,

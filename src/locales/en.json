@@ -317,6 +317,7 @@
     "ai": "AI/ML",
     "layoffs": "Layoffs Tracker",
     "monitors": "My Monitors",
+    "customNews": "Custom News Sources",
     "satelliteFires": "Fires",
     "macroSignals": "BTC Regime",
     "etfFlows": "BTC ETF Tracker",
@@ -843,6 +844,19 @@
       "showingMatches": "Showing {{count}} of {{total}} matches",
       "match": "match",
       "matches": "matches"
+    },
+    "customNews": {
+      "placeholder": "https://example.com or RSS feed URL",
+      "add": "+ Add",
+      "fetch": "Fetch & Analyze",
+      "noSources": "No sources added yet",
+      "addUrlsHint": "Add URLs above and click Fetch & Analyze",
+      "loading": "Fetching articles...",
+      "noResults": "No articles found",
+      "articles": "articles",
+      "fetchError": "Failed to fetch articles. Check the URLs and try again.",
+      "invalidUrl": "Please enter a valid URL (https://...)",
+      "infoTooltip": "<strong>Custom News Sources</strong> Add any website or RSS feed URL and analyze its news with AI threat classification."
     },
     "regulation": {
       "infoTooltip": "<strong>Regulation</strong> Regulatory actions, policy changes, and enforcement updates from global regulators: financial, tech, energy, and trade authorities. Sourced from official government and regulatory body publications.",
