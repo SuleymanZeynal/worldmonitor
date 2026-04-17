@@ -3,33 +3,11 @@
  * Generate a TELEGRAM_SESSION (GramJS StringSession) for the Telegram OSINT relay.
  *
  * Usage:
- *   npm run telegram:auth          (reads .env.local automatically)
+ *   npm run telegram:auth   (reads .env.local automatically via --env-file)
  *
  * Output:
  *   Prints TELEGRAM_SESSION=... to stdout — paste it into .env.local
  */
-
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// Auto-load .env.local so the script works with just `npm run telegram:auth`
-const root = resolve(fileURLToPath(import.meta.url), '../../..');
-for (const name of ['.env.local', '.env']) {
-  try {
-    const lines = readFileSync(resolve(root, name), 'utf8').split('\n');
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eq = trimmed.indexOf('=');
-      if (eq < 1) continue;
-      const key = trimmed.slice(0, eq).trim();
-      const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, '');
-      if (!(key in process.env)) process.env[key] = val;
-    }
-    break;
-  } catch { /* file not found, try next */ }
-}
 
 import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions/index.js';

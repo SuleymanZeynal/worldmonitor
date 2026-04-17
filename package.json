@@ -15,7 +15,7 @@
     "version:check": "node scripts/sync-desktop-version.mjs --check",
     "dev": "vite",
     "relay": "node scripts/ais-relay.cjs",
-    "telegram:auth": "node scripts/telegram/session-auth.mjs",
+    "telegram:auth": "node --env-file=.env.local scripts/telegram/session-auth.mjs",
     "dev:tech": "cross-env VITE_VARIANT=tech vite",
     "dev:finance": "cross-env VITE_VARIANT=finance vite",
     "dev:happy": "cross-env VITE_VARIANT=happy vite",
