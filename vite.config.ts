@@ -576,6 +576,54 @@ function youtubeLivePlugin(): Plugin {
   };
 }
 
+function telegramRelayPlugin(): Plugin {
+  return {
+    name: 'telegram-relay',
+    apply: 'serve',
+    configureServer() {
+      const apiId = process.env.TELEGRAM_API_ID;
+      const apiHash = process.env.TELEGRAM_API_HASH;
+      const session = process.env.TELEGRAM_SESSION;
+
+      if (!apiId || !apiHash || !session) return;
+
+      const relayPort = process.env.RELAY_PORT || '3004';
+      const { spawn } = require('child_process') as typeof import('child_process');
+      const relay = spawn(
+        process.execPath,
+        ['scripts/ais-relay.cjs'],
+        {
+          env: { ...process.env, PORT: relayPort },
+          stdio: ['ignore', 'pipe', 'pipe'],
+        }
+      );
+
+      relay.stdout?.on('data', (d: Buffer) => {
+        const line = d.toString().trim();
+        if (line) console.log(`\x1b[36m[relay]\x1b[0m ${line}`);
+      });
+      relay.stderr?.on('data', (d: Buffer) => {
+        const line = d.toString().trim();
+        if (line) console.error(`\x1b[31m[relay]\x1b[0m ${line}`);
+      });
+      relay.on('exit', (code: number | null) => {
+        if (code !== 0 && code !== null)
+          console.warn(`\x1b[33m[relay]\x1b[0m process exited with code ${code}`);
+      });
+
+      process.on('exit', () => relay.kill());
+      process.on('SIGINT', () => relay.kill());
+
+      console.log(`\x1b[36m[relay]\x1b[0m Telegram relay starting on port ${relayPort}…`);
+
+      // Set WS_RELAY_URL so server handlers can reach the relay
+      if (!process.env.WS_RELAY_URL) {
+        process.env.WS_RELAY_URL = `http://localhost:${relayPort}`;
+      }
+    },
+  };
+}
+
 function gpsjamDevPlugin(): Plugin {
   return {
     name: 'gpsjam-dev',
@@ -623,6 +671,7 @@ export default defineConfig(({ mode }) => {
       rssProxyPlugin(),
       youtubeLivePlugin(),
       gpsjamDevPlugin(),
+      telegramRelayPlugin(),
       sebufApiPlugin(),
       brotliPrecompressPlugin(),
       VitePWA({
