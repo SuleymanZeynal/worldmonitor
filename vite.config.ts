@@ -4,6 +4,7 @@ import { resolve, dirname, extname } from 'path';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import { brotliCompress } from 'zlib';
 import { promisify } from 'util';
+import { spawn } from 'child_process';
 import pkg from './package.json';
 import { VARIANT_META, type VariantMeta } from './src/config/variant-meta';
 
@@ -588,7 +589,6 @@ function telegramRelayPlugin(): Plugin {
       if (!apiId || !apiHash || !session) return;
 
       const relayPort = process.env.RELAY_PORT || '3004';
-      const { spawn } = require('child_process') as typeof import('child_process');
       const relay = spawn(
         process.execPath,
         ['scripts/ais-relay.cjs'],
