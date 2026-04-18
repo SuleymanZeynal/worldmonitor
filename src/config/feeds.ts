@@ -166,93 +166,105 @@ export function getSourcePanelId(sourceName: string): string {
 }
 
 const AZ_FEEDS: Feed[] = [
-  { name: 'Report.az', url: rss('https://report.az/rss') },
+  { name: 'Report.az',  url: rss('https://report.az/rss') },
   { name: 'Oxu.az',    url: rss('https://oxu.az/feed') },
   { name: 'Haqqin.az', url: rss('https://haqqin.az/rss') },
+  { name: 'AzərTAc',   url: rss('https://azertag.az/rss') },
+  { name: '1news.az',  url: rss('https://1news.az/rss') },
 ];
 
+const TR_FEEDS: Feed[] = [
+  { name: 'Anadolu Ajansı', url: rss('https://www.aa.com.tr/tr/rss/default?cat=guncel') },
+  { name: 'NTV Haber',      url: rss('https://www.ntv.com.tr/son-dakika.rss') },
+  { name: 'Hürriyet',       url: rss('https://www.hurriyet.com.tr/rss/anasayfa') },
+  { name: 'Sabah',          url: rss('https://www.sabah.com.tr/rss/anasayfa.xml') },
+  { name: 'Sözcü',          url: rss('https://www.sozcu.com.tr/rss/son-dakika.xml') },
+];
+
+const REGIONAL_FEEDS: Feed[] = [...AZ_FEEDS, ...TR_FEEDS];
+
 const FULL_FEEDS: Record<string, Feed[]> = {
-  politics: AZ_FEEDS,
-  us:              AZ_FEEDS,
-  europe:          AZ_FEEDS,
-  middleeast:      AZ_FEEDS,
-  tech:            AZ_FEEDS,
-  ai:              AZ_FEEDS,
-  finance:         AZ_FEEDS,
-  gov:             AZ_FEEDS,
-  layoffs:         AZ_FEEDS,
-  thinktanks:      AZ_FEEDS,
-  crisis:          AZ_FEEDS,
-  africa:          AZ_FEEDS,
-  latam:           AZ_FEEDS,
-  asia:            AZ_FEEDS,
-  energy:          AZ_FEEDS,
+  politics:         REGIONAL_FEEDS,
+  us:               REGIONAL_FEEDS,
+  europe:           REGIONAL_FEEDS,
+  middleeast:       REGIONAL_FEEDS,
+  tech:             REGIONAL_FEEDS,
+  ai:               REGIONAL_FEEDS,
+  finance:          REGIONAL_FEEDS,
+  gov:              REGIONAL_FEEDS,
+  layoffs:          REGIONAL_FEEDS,
+  thinktanks:       REGIONAL_FEEDS,
+  crisis:           REGIONAL_FEEDS,
+  africa:           REGIONAL_FEEDS,
+  latam:            REGIONAL_FEEDS,
+  asia:             REGIONAL_FEEDS,
+  energy:           REGIONAL_FEEDS,
 };
 
 // Tech/AI variant feeds
 const TECH_FEEDS: Record<string, Feed[]> = {
-  tech:            AZ_FEEDS,
-  ai:              AZ_FEEDS,
-  startups:        AZ_FEEDS,
-  vcblogs:         AZ_FEEDS,
-  regionalStartups: AZ_FEEDS,
-  unicorns:        AZ_FEEDS,
-  accelerators:    AZ_FEEDS,
-  security:        AZ_FEEDS,
-  policy:          AZ_FEEDS,
-  github:          AZ_FEEDS,
-  funding:         AZ_FEEDS,
-  cloud:           AZ_FEEDS,
-  layoffs:         AZ_FEEDS,
-  finance:         AZ_FEEDS,
-  dev:             AZ_FEEDS,
-  ipo:             AZ_FEEDS,
-  producthunt:     AZ_FEEDS,
-  hardware:        AZ_FEEDS,
-  outages:         AZ_FEEDS,
-  podcasts:        AZ_FEEDS,
+  tech:             REGIONAL_FEEDS,
+  ai:               REGIONAL_FEEDS,
+  startups:         REGIONAL_FEEDS,
+  vcblogs:          REGIONAL_FEEDS,
+  regionalStartups: REGIONAL_FEEDS,
+  unicorns:         REGIONAL_FEEDS,
+  accelerators:     REGIONAL_FEEDS,
+  security:         REGIONAL_FEEDS,
+  policy:           REGIONAL_FEEDS,
+  github:           REGIONAL_FEEDS,
+  funding:          REGIONAL_FEEDS,
+  cloud:            REGIONAL_FEEDS,
+  layoffs:          REGIONAL_FEEDS,
+  finance:          REGIONAL_FEEDS,
+  dev:              REGIONAL_FEEDS,
+  ipo:              REGIONAL_FEEDS,
+  producthunt:      REGIONAL_FEEDS,
+  hardware:         REGIONAL_FEEDS,
+  outages:          REGIONAL_FEEDS,
+  podcasts:         REGIONAL_FEEDS,
 };
 
-// Finance/Trading variant feeds (all free RSS / Google News proxies)
+// Finance/Trading variant feeds
 const FINANCE_FEEDS: Record<string, Feed[]> = {
-  finance:         AZ_FEEDS,
-  markets:         AZ_FEEDS,
-  forex:           AZ_FEEDS,
-  bonds:           AZ_FEEDS,
-  commodities:     AZ_FEEDS,
-  crypto:          AZ_FEEDS,
-  centralbanks:    AZ_FEEDS,
-  economic:        AZ_FEEDS,
-  ipo:             AZ_FEEDS,
-  derivatives:     AZ_FEEDS,
-  fintech:         AZ_FEEDS,
-  'fin-regulation': AZ_FEEDS,
-  institutional:   AZ_FEEDS,
-  analysis:        AZ_FEEDS,
-  gccNews:         AZ_FEEDS,
+  finance:          REGIONAL_FEEDS,
+  markets:          REGIONAL_FEEDS,
+  forex:            REGIONAL_FEEDS,
+  bonds:            REGIONAL_FEEDS,
+  commodities:      REGIONAL_FEEDS,
+  crypto:           REGIONAL_FEEDS,
+  centralbanks:     REGIONAL_FEEDS,
+  economic:         REGIONAL_FEEDS,
+  ipo:              REGIONAL_FEEDS,
+  derivatives:      REGIONAL_FEEDS,
+  fintech:          REGIONAL_FEEDS,
+  'fin-regulation': REGIONAL_FEEDS,
+  institutional:    REGIONAL_FEEDS,
+  analysis:         REGIONAL_FEEDS,
+  gccNews:          REGIONAL_FEEDS,
 };
 
 const HAPPY_FEEDS: Record<string, Feed[]> = {
-  positive:        AZ_FEEDS,
-  science:         AZ_FEEDS,
-  nature:          AZ_FEEDS,
-  inspiring:       AZ_FEEDS,
-  community:       AZ_FEEDS,
+  positive:         REGIONAL_FEEDS,
+  science:          REGIONAL_FEEDS,
+  nature:           REGIONAL_FEEDS,
+  inspiring:        REGIONAL_FEEDS,
+  community:        REGIONAL_FEEDS,
 };
 
-// Commodity variant feeds (from commodity.ts)
+// Commodity variant feeds
 const COMMODITY_FEEDS: Record<string, Feed[]> = {
-  'commodity-news':    AZ_FEEDS,
-  'gold-silver':       AZ_FEEDS,
-  energy:              AZ_FEEDS,
-  'mining-news':       AZ_FEEDS,
-  'critical-minerals': AZ_FEEDS,
-  'base-metals':       AZ_FEEDS,
-  'mining-companies':  AZ_FEEDS,
-  'supply-chain':      AZ_FEEDS,
-  'commodity-regulation': AZ_FEEDS,
-  markets:             AZ_FEEDS,
-  finance:             AZ_FEEDS,
+  'commodity-news':        REGIONAL_FEEDS,
+  'gold-silver':           REGIONAL_FEEDS,
+  energy:                  REGIONAL_FEEDS,
+  'mining-news':           REGIONAL_FEEDS,
+  'critical-minerals':     REGIONAL_FEEDS,
+  'base-metals':           REGIONAL_FEEDS,
+  'mining-companies':      REGIONAL_FEEDS,
+  'supply-chain':          REGIONAL_FEEDS,
+  'commodity-regulation':  REGIONAL_FEEDS,
+  markets:                 REGIONAL_FEEDS,
+  finance:                 REGIONAL_FEEDS,
 };
 
 // Variant-aware exports
@@ -301,23 +313,27 @@ export const SOURCE_REGION_MAP: Record<string, { labelKey: string; feedKeys: str
 
 export const INTEL_SOURCES: Feed[] = [];
 
-// Default-enabled sources per panel (Tier 1+2 priority, ≥8 per panel)
+const ALL_REGIONAL_NAMES = [
+  'Report.az', 'Oxu.az', 'Haqqin.az', 'AzərTAc', '1news.az',
+  'Anadolu Ajansı', 'NTV Haber', 'Hürriyet', 'Sabah', 'Sözcü',
+];
+
 export const DEFAULT_ENABLED_SOURCES: Record<string, string[]> = {
-  politics: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  us: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  europe: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  middleeast: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  africa: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  latam: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  asia: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  tech: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  ai: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  finance: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  gov: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  layoffs: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  thinktanks: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  crisis: ['Report.az', 'Oxu.az', 'Haqqin.az'],
-  energy: ['Report.az', 'Oxu.az', 'Haqqin.az'],
+  politics:   ALL_REGIONAL_NAMES,
+  us:         ALL_REGIONAL_NAMES,
+  europe:     ALL_REGIONAL_NAMES,
+  middleeast: ALL_REGIONAL_NAMES,
+  africa:     ALL_REGIONAL_NAMES,
+  latam:      ALL_REGIONAL_NAMES,
+  asia:       ALL_REGIONAL_NAMES,
+  tech:       ALL_REGIONAL_NAMES,
+  ai:         ALL_REGIONAL_NAMES,
+  finance:    ALL_REGIONAL_NAMES,
+  gov:        ALL_REGIONAL_NAMES,
+  layoffs:    ALL_REGIONAL_NAMES,
+  thinktanks: ALL_REGIONAL_NAMES,
+  crisis:     ALL_REGIONAL_NAMES,
+  energy:     ALL_REGIONAL_NAMES,
 };
 
 export const DEFAULT_ENABLED_INTEL: string[] = [];

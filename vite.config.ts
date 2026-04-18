@@ -448,7 +448,11 @@ const RSS_PROXY_ALLOWED_DOMAINS = new Set([
   // Finance variant
   'www.coindesk.com', 'cointelegraph.com',
   // Azerbaijani news sources
-  'report.az', 'oxu.az', 'haqqin.az',
+  'report.az', 'oxu.az', 'haqqin.az', 'azertag.az', '1news.az', 'turan.az',
+  // Turkish news sources
+  'www.aa.com.tr', 'www.ntv.com.tr', 'www.hurriyet.com.tr', 'www.sabah.com.tr',
+  'www.sozcu.com.tr', 'www.milliyet.com.tr', 'www.cumhuriyet.com.tr',
+  'www.haber7.com', 'www.haberler.com', 'www.trthaber.com',
   // Happy variant — positive news sources
   'www.goodnewsnetwork.org', 'www.positive.news', 'reasonstobecheerful.world',
   'www.optimistdaily.com', 'www.sunnyskyz.com', 'www.huffpost.com',
