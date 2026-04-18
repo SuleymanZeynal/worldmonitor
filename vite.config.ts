@@ -447,6 +447,8 @@ const RSS_PROXY_ALLOWED_DOMAINS = new Set([
   'news.ycombinator.com',
   // Finance variant
   'www.coindesk.com', 'cointelegraph.com',
+  // Azerbaijani news sources
+  'report.az', 'oxu.az', 'haqqin.az',
   // Happy variant — positive news sources
   'www.goodnewsnetwork.org', 'www.positive.news', 'reasonstobecheerful.world',
   'www.optimistdaily.com', 'www.sunnyskyz.com', 'www.huffpost.com',
@@ -581,14 +583,39 @@ function telegramRelayPlugin(): Plugin {
   return {
     name: 'telegram-relay',
     apply: 'serve',
-    configureServer() {
+    configureServer(server) {
+      const relayPort = process.env.RELAY_PORT || '3004';
+
+      // Always add the /api/telegram-feed proxy middleware so the panel works
+      // even when the relay is running standalone (not spawned here).
+      server.middlewares.use(async (req, res, next) => {
+        if (!req.url?.startsWith('/api/telegram-feed')) return next();
+
+        const qs = req.url.slice('/api/telegram-feed'.length); // e.g. "?limit=50"
+        const relayUrl = `http://localhost:${relayPort}/telegram/feed${qs}`;
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 10000);
+          const upstream = await fetch(relayUrl, { signal: controller.signal });
+          clearTimeout(timer);
+          const body = await upstream.text();
+          res.statusCode = upstream.status;
+          res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/json');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.end(body);
+        } catch {
+          res.statusCode = 503;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Telegram relay not reachable' }));
+        }
+      });
+
       const apiId = process.env.TELEGRAM_API_ID;
       const apiHash = process.env.TELEGRAM_API_HASH;
       const session = process.env.TELEGRAM_SESSION;
 
       if (!apiId || !apiHash || !session) return;
 
-      const relayPort = process.env.RELAY_PORT || '3004';
       const relay = spawn(
         process.execPath,
         ['scripts/ais-relay.cjs'],
@@ -616,7 +643,6 @@ function telegramRelayPlugin(): Plugin {
 
       console.log(`\x1b[36m[relay]\x1b[0m Telegram relay starting on port ${relayPort}…`);
 
-      // Set WS_RELAY_URL so server handlers can reach the relay
       if (!process.env.WS_RELAY_URL) {
         process.env.WS_RELAY_URL = `http://localhost:${relayPort}`;
       }
