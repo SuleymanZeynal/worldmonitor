@@ -112,6 +112,30 @@ export const SCENARIO_TEMPLATES: readonly ScenarioTemplate[] = [
     affectedHs2: ['85'], // electronics
     costShockMultiplier: 1.50,
   },
+  {
+    id: 'turkish-straits-closure',
+    name: 'Turkish Straits Closure',
+    description:
+      'Full closure of the Bosphorus and Dardanelles for 30 days — blocks Azerbaijani BTC crude exports from Ceyhan, Russian and Ukrainian grain shipments, and all Black Sea oil transit to Mediterranean markets.',
+    type: 'conflict',
+    affectedChokepointIds: ['bosphorus'],
+    disruptionPct: 100,
+    durationDays: 30,
+    affectedHs2: ['27', '10', '12'], // energy, cereals, oilseeds
+    costShockMultiplier: 1.65,
+  },
+  {
+    id: 'btc-pipeline-disruption',
+    name: 'BTC Pipeline Disruption',
+    description:
+      'Sabotage or armed conflict disrupts the Baku–Tbilisi–Ceyhan (BTC) crude oil pipeline for 45 days — Azerbaijan loses its primary export route (~600,000 bbl/day), affecting European energy security and Caspian crude flows.',
+    type: 'infrastructure',
+    affectedChokepointIds: ['bosphorus'],
+    disruptionPct: 60,
+    durationDays: 45,
+    affectedHs2: ['27'], // energy
+    costShockMultiplier: 1.40,
+  },
 ] as const;
 
 /** Lookup by scenario ID — returns undefined if not found */
