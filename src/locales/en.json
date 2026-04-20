@@ -1820,16 +1820,19 @@
       "empty": "No messages available",
       "disabled": "Telegram relay not active",
       "filterAll": "All",
+      "filterAzerbaijan": "Azerbaijan",
+      "filterTurkey": "Turkey",
+      "filterGeopolitics": "Geopolitics",
       "filterBreaking": "Breaking",
+      "filterFinance": "Finance",
+      "filterCyber": "Cyber",
       "filterConflict": "Conflict",
       "filterAlerts": "Alerts",
       "filterOsint": "OSINT",
       "filterPolitics": "Politics",
       "filterMiddleeast": "Middle East",
       "live": "LIVE",
-      "viewSource": "View Source",
-      "filterGeopolitics": "Geopolitics",
-      "filterCyber": "Cyber"
+      "viewSource": "View Source"
     },
     "investments": {
       "infoTooltip": "Database of Saudi Arabia and UAE foreign direct investments in global critical infrastructure. Click a row to fly to the investment on the map.",

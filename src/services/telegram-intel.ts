@@ -25,13 +25,13 @@ export interface TelegramFeedResponse {
 }
 
 export const TELEGRAM_TOPICS = [
-  { id: 'all', labelKey: 'components.telegramIntel.filterAll' },
-  { id: 'breaking', labelKey: 'components.telegramIntel.filterBreaking' },
-  { id: 'conflict', labelKey: 'components.telegramIntel.filterConflict' },
+  { id: 'all',         labelKey: 'components.telegramIntel.filterAll' },
+  { id: 'azerbaijan',  labelKey: 'components.telegramIntel.filterAzerbaijan' },
+  { id: 'turkey',      labelKey: 'components.telegramIntel.filterTurkey' },
   { id: 'geopolitics', labelKey: 'components.telegramIntel.filterGeopolitics' },
-  { id: 'middleeast', labelKey: 'components.telegramIntel.filterMiddleeast' },
-  { id: 'osint', labelKey: 'components.telegramIntel.filterOsint' },
-  { id: 'cyber', labelKey: 'components.telegramIntel.filterCyber' },
+  { id: 'breaking',    labelKey: 'components.telegramIntel.filterBreaking' },
+  { id: 'finance',     labelKey: 'components.telegramIntel.filterFinance' },
+  { id: 'cyber',       labelKey: 'components.telegramIntel.filterCyber' },
 ] as const;
 
 let cachedResponse: TelegramFeedResponse | null = null;
