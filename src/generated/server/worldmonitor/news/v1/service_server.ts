@@ -126,10 +126,23 @@ export interface RouteDescriptor {
   handler: (req: Request) => Promise<Response>;
 }
 
+export interface AnalyzeNewsFromUrlsRequest {
+  urls: string[];
+  variant: string;
+  lang: string;
+}
+
+export interface AnalyzeNewsFromUrlsResponse {
+  categories: Record<string, CategoryBucket>;
+  feedStatuses: Record<string, string>;
+  generatedAt: string;
+}
+
 export interface NewsServiceHandler {
   summarizeArticle(ctx: ServerContext, req: SummarizeArticleRequest): Promise<SummarizeArticleResponse>;
   getSummarizeArticleCache(ctx: ServerContext, req: GetSummarizeArticleCacheRequest): Promise<SummarizeArticleResponse>;
   listFeedDigest(ctx: ServerContext, req: ListFeedDigestRequest): Promise<ListFeedDigestResponse>;
+  analyzeNewsFromUrls(ctx: ServerContext, req: AnalyzeNewsFromUrlsRequest): Promise<AnalyzeNewsFromUrlsResponse>;
 }
 
 export function createNewsServiceRoutes(
@@ -254,6 +267,49 @@ export function createNewsServiceRoutes(
 
           const result = await handler.listFeedDigest(ctx, body);
           return new Response(JSON.stringify(result as ListFeedDigestResponse), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (err: unknown) {
+          if (err instanceof ValidationError) {
+            return new Response(JSON.stringify({ violations: err.violations }), {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          if (options?.onError) {
+            return options.onError(err, req);
+          }
+          const message = err instanceof Error ? err.message : String(err);
+          return new Response(JSON.stringify({ message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      },
+    },
+    {
+      method: "POST",
+      path: "/api/news/v1/analyze-news-from-urls",
+      handler: async (req: Request): Promise<Response> => {
+        try {
+          const pathParams: Record<string, string> = {};
+          const body = await req.json() as AnalyzeNewsFromUrlsRequest;
+          if (options?.validateRequest) {
+            const bodyViolations = options.validateRequest("analyzeNewsFromUrls", body);
+            if (bodyViolations) {
+              throw new ValidationError(bodyViolations);
+            }
+          }
+
+          const ctx: ServerContext = {
+            request: req,
+            pathParams,
+            headers: Object.fromEntries(req.headers.entries()),
+          };
+
+          const result = await handler.analyzeNewsFromUrls(ctx, body);
+          return new Response(JSON.stringify(result as AnalyzeNewsFromUrlsResponse), {
             status: 200,
             headers: { "Content-Type": "application/json" },
           });

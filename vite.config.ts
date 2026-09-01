@@ -4,6 +4,7 @@ import { resolve, dirname, extname } from 'path';
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import { brotliCompress } from 'zlib';
 import { promisify } from 'util';
+import { spawn } from 'child_process';
 import pkg from './package.json';
 import { VARIANT_META, type VariantMeta } from './src/config/variant-meta';
 
@@ -446,6 +447,12 @@ const RSS_PROXY_ALLOWED_DOMAINS = new Set([
   'news.ycombinator.com',
   // Finance variant
   'www.coindesk.com', 'cointelegraph.com',
+  // Azerbaijani news sources
+  'report.az', 'oxu.az', 'haqqin.az', 'azertag.az', '1news.az', 'turan.az',
+  // Turkish news sources
+  'www.aa.com.tr', 'www.ntv.com.tr', 'www.hurriyet.com.tr', 'www.sabah.com.tr',
+  'www.sozcu.com.tr', 'www.milliyet.com.tr', 'www.cumhuriyet.com.tr',
+  'www.haber7.com', 'www.haberler.com', 'www.trthaber.com',
   // Happy variant — positive news sources
   'www.goodnewsnetwork.org', 'www.positive.news', 'reasonstobecheerful.world',
   'www.optimistdaily.com', 'www.sunnyskyz.com', 'www.huffpost.com',
@@ -576,6 +583,77 @@ function youtubeLivePlugin(): Plugin {
   };
 }
 
+function telegramRelayPlugin(): Plugin {
+  return {
+    name: 'telegram-relay',
+    apply: 'serve',
+    configureServer(server) {
+      const relayPort = process.env.RELAY_PORT || '3004';
+
+      // Always add the /api/telegram-feed proxy middleware so the panel works
+      // even when the relay is running standalone (not spawned here).
+      server.middlewares.use(async (req, res, next) => {
+        if (!req.url?.startsWith('/api/telegram-feed')) return next();
+
+        const qs = req.url.slice('/api/telegram-feed'.length); // e.g. "?limit=50"
+        const relayUrl = `http://localhost:${relayPort}/telegram/feed${qs}`;
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 10000);
+          const upstream = await fetch(relayUrl, { signal: controller.signal });
+          clearTimeout(timer);
+          const body = await upstream.text();
+          res.statusCode = upstream.status;
+          res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/json');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.end(body);
+        } catch {
+          res.statusCode = 503;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Telegram relay not reachable' }));
+        }
+      });
+
+      const apiId = process.env.TELEGRAM_API_ID;
+      const apiHash = process.env.TELEGRAM_API_HASH;
+      const session = process.env.TELEGRAM_SESSION;
+
+      if (!apiId || !apiHash || !session) return;
+
+      const relay = spawn(
+        process.execPath,
+        ['scripts/ais-relay.cjs'],
+        {
+          env: { ...process.env, PORT: relayPort },
+          stdio: ['ignore', 'pipe', 'pipe'],
+        }
+      );
+
+      relay.stdout?.on('data', (d: Buffer) => {
+        const line = d.toString().trim();
+        if (line) console.log(`\x1b[36m[relay]\x1b[0m ${line}`);
+      });
+      relay.stderr?.on('data', (d: Buffer) => {
+        const line = d.toString().trim();
+        if (line) console.error(`\x1b[31m[relay]\x1b[0m ${line}`);
+      });
+      relay.on('exit', (code: number | null) => {
+        if (code !== 0 && code !== null)
+          console.warn(`\x1b[33m[relay]\x1b[0m process exited with code ${code}`);
+      });
+
+      process.on('exit', () => relay.kill());
+      process.on('SIGINT', () => relay.kill());
+
+      console.log(`\x1b[36m[relay]\x1b[0m Telegram relay starting on port ${relayPort}…`);
+
+      if (!process.env.WS_RELAY_URL) {
+        process.env.WS_RELAY_URL = `http://localhost:${relayPort}`;
+      }
+    },
+  };
+}
+
 function gpsjamDevPlugin(): Plugin {
   return {
     name: 'gpsjam-dev',
@@ -623,6 +701,7 @@ export default defineConfig(({ mode }) => {
       rssProxyPlugin(),
       youtubeLivePlugin(),
       gpsjamDevPlugin(),
+      telegramRelayPlugin(),
       sebufApiPlugin(),
       brotliPrecompressPlugin(),
       VitePWA({

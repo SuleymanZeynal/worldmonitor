@@ -43,13 +43,14 @@ export function buildArticlePrompts(
   const isTechVariant = opts.variant === 'tech';
   const dateContext = `Current date: ${new Date().toISOString().split('T')[0]}.${isTechVariant ? '' : ' Provide geopolitical context appropriate for the current date.'}`;
   const langInstruction = opts.lang && opts.lang !== 'en' ? `\nIMPORTANT: Output the summary in ${opts.lang.toUpperCase()} language.` : '';
+  const multilingualNote = `\nNOTE: Headlines may be written in Azerbaijani, Turkish, or other languages. You MUST read and summarize the actual headlines provided. NEVER invent or suggest headlines that are not in the input list.`;
 
   let systemPrompt: string;
   let userPrompt: string;
 
   if (opts.mode === 'brief') {
     if (isTechVariant) {
-      systemPrompt = `${dateContext}
+      systemPrompt = `${dateContext}${multilingualNote}
 
 Summarize the single most important tech/startup headline in 2 concise sentences MAX (under 60 words total).
 Rules:
@@ -61,7 +62,7 @@ Rules:
 - Lead with the company/product/technology name
 - No bullet points, no meta-commentary, no elaboration beyond the core facts${langInstruction}`;
     } else {
-      systemPrompt = `${dateContext}
+      systemPrompt = `${dateContext}${multilingualNote}
 
 Summarize the single most important headline in 2 concise sentences MAX (under 60 words total).
 Rules:
@@ -77,7 +78,7 @@ Rules:
     userPrompt = `Each headline below is a separate story. Pick the most important ONE and summarize only that story:\n${headlineText}${intelSection}`;
   } else if (opts.mode === 'analysis') {
     if (isTechVariant) {
-      systemPrompt = `${dateContext}
+      systemPrompt = `${dateContext}${multilingualNote}
 
 Analyze the most significant tech/startup development in 2 concise sentences MAX (under 60 words total).
 Rules:
@@ -88,7 +89,7 @@ Rules:
 - IGNORE political implications, trade wars, government unless directly about tech policy
 - Lead with the insight, no filler or elaboration`;
     } else {
-      systemPrompt = `${dateContext}
+      systemPrompt = `${dateContext}${multilingualNote}
 
 Analyze the most significant development in 2 concise sentences MAX (under 60 words total). Be direct and specific.
 Rules:

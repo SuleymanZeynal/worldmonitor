@@ -36,4 +36,30 @@ export const MINERAL_PRODUCTION_2024: MineralProductionEntry[] = [
   { mineral: 'Germanium', country: 'Belgium', countryCode: 'BE', productionTonnes: 15, unit: 'tonnes' },
   { mineral: 'Germanium', country: 'Canada', countryCode: 'CA', productionTonnes: 9, unit: 'tonnes' },
   { mineral: 'Germanium', country: 'Russia', countryCode: 'RU', productionTonnes: 5, unit: 'tonnes' },
+
+  // Boron — Turkey holds ~70% of global reserves and dominates production
+  { mineral: 'Boron', country: 'Turkey', countryCode: 'TR', productionTonnes: 1950000, unit: 'tonnes B2O3' },
+  { mineral: 'Boron', country: 'USA', countryCode: 'US', productionTonnes: 500000, unit: 'tonnes B2O3' },
+  { mineral: 'Boron', country: 'Russia', countryCode: 'RU', productionTonnes: 70000, unit: 'tonnes B2O3' },
+  { mineral: 'Boron', country: 'Chile', countryCode: 'CL', productionTonnes: 60000, unit: 'tonnes B2O3' },
+
+  // Chromium — Turkey is top-5 global producer; critical for stainless steel
+  { mineral: 'Chromium', country: 'South Africa', countryCode: 'ZA', productionTonnes: 18000000, unit: 'tonnes ore' },
+  { mineral: 'Chromium', country: 'Kazakhstan', countryCode: 'KZ', productionTonnes: 7500000, unit: 'tonnes ore' },
+  { mineral: 'Chromium', country: 'India', countryCode: 'IN', productionTonnes: 4100000, unit: 'tonnes ore' },
+  { mineral: 'Chromium', country: 'Turkey', countryCode: 'TR', productionTonnes: 3500000, unit: 'tonnes ore' },
+
+  // Gold (tonnes) — Turkey is a significant producer; Azerbaijan growing via Chovdar/Gedabek mines
+  { mineral: 'Gold', country: 'China', countryCode: 'CN', productionTonnes: 375, unit: 'tonnes' },
+  { mineral: 'Gold', country: 'Russia', countryCode: 'RU', productionTonnes: 310, unit: 'tonnes' },
+  { mineral: 'Gold', country: 'Australia', countryCode: 'AU', productionTonnes: 305, unit: 'tonnes' },
+  { mineral: 'Gold', country: 'Canada', countryCode: 'CA', productionTonnes: 195, unit: 'tonnes' },
+  { mineral: 'Gold', country: 'Turkey', countryCode: 'TR', productionTonnes: 42, unit: 'tonnes' },
+  { mineral: 'Gold', country: 'Azerbaijan', countryCode: 'AZ', productionTonnes: 4, unit: 'tonnes' },
+
+  // Crude Oil (million barrels/year) — Azerbaijan is a major Caspian producer (BTC pipeline)
+  { mineral: 'Crude Oil (Caspian)', country: 'Azerbaijan', countryCode: 'AZ', productionTonnes: 35000000, unit: 'tonnes/year' },
+  { mineral: 'Crude Oil (Caspian)', country: 'Kazakhstan', countryCode: 'KZ', productionTonnes: 90000000, unit: 'tonnes/year' },
+  { mineral: 'Crude Oil (Caspian)', country: 'Turkmenistan', countryCode: 'TM', productionTonnes: 11000000, unit: 'tonnes/year' },
 ];
+

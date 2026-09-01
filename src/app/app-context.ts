@@ -1,4 +1,5 @@
 import type { InternetOutage, SocialUnrestEvent, MilitaryFlight, MilitaryFlightCluster, MilitaryVessel, MilitaryVesselCluster, USNIFleetReport, PanelConfig, MapLayers, NewsItem, MarketData, ClusteredEvent, CyberThreat, Monitor } from '@/types';
+import type { CustomSource } from '@/components/CustomNewsPanel';
 import type { AirportDelayAlert, PositionSample } from '@/services/aviation';
 import type { IranEvent } from '@/generated/client/worldmonitor/conflict/v1/service_client';
 import type { SanctionsPressureResult } from '@/services/sanctions-pressure';
@@ -51,6 +52,7 @@ export interface AppContext {
   inFlight: Set<string>;
   seenGeoAlerts: Set<string>;
   monitors: Monitor[];
+  customNewsSources: CustomSource[];
 
   signalModal: import('@/components').SignalModal | null;
   statusPanel: import('@/components').StatusPanel | null;

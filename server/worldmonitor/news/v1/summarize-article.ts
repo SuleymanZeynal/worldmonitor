@@ -24,10 +24,11 @@ import { stripThinkingTags } from '../../../_shared/llm';
 
 export const TASK_NARRATION = /^(we need to|i need to|let me|i'll |i should|i will |the task is|the instructions|according to the rules|so we need to|okay[,.]\s*(i'll|let me|so|we need|the task|i should|i will)|sure[,.]\s*(i'll|let me|so|we need|the task|i should|i will|here)|first[, ]+(i|we|let)|to summarize (the headlines|the task|this)|my task (is|was|:)|step \d)/i;
 export const PROMPT_ECHO = /^(summarize the top story|summarize the key|rules:|here are the rules|the top story is likely)/i;
+export const HALLUCINATION = /^(i (couldn'?t|could not|can'?t|cannot) find|i can suggest|however[,.]?\s*i can|if you (provide|give|share)|here are (some|a few) (possible|suggested|example)|unfortunately[,.]?\s*i (don'?t|do not|couldn'?t))/i;
 
 export function hasReasoningPreamble(text: string): boolean {
   const trimmed = text.trim();
-  return TASK_NARRATION.test(trimmed) || PROMPT_ECHO.test(trimmed);
+  return TASK_NARRATION.test(trimmed) || PROMPT_ECHO.test(trimmed) || HALLUCINATION.test(trimmed);
 }
 
 // ======================================================================

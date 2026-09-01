@@ -147,7 +147,8 @@ export const CHOKEPOINT_REGISTRY: readonly ChokepointRegistryEntry[] = [
     corridorRiskName: null,
     baselineId: 'turkish',
     shockModelSupported: false,
-    routeIds: ['russia-med-oil'],
+    // BTC crude (Ceyhan→Med), TANAP/TAP gas, Russian grain and oil all transit
+    routeIds: ['russia-med-oil', 'btc-ceyhan-med', 'black-sea-grain', 'caspian-med-oil'],
     lat: 41.1,
     lon: 29.0,
   },
